@@ -170,31 +170,153 @@ orderline2 = OrderLine(item = i2, quantity = 10)
 o3.order_lines.append(orderline1)
 o3.order_lines.append(orderline2)
 
+#--Querying Database
 
-
+# all() method
+session.query(Customer).all()
+print("session.query(Customer).all()=", session.query(Customer).all())
 #--------------------------
-session.add(c1)
-session.add(c2)
-print (session.new)
-#session.commit()
-print (session.commit())
-print(c1.id, c2.id)
-print("c1.orders and c2.orders=", c1.orders, c2.orders)
-session.add_all([c3, c4, c5, c6])
-#session.commit()
-session.add_all([i1, i2, i3, i4, i5, i6, i7, i8])
-#session.commit()
-session.add_all([o1, o2])
-#session.new
-#session.commit()
-print("c1.orders and c2.orders=", c1.orders, c2.orders)
-print("o1.customer=", o1.customer)
-print("c1.orders[0].order_lines, c1.orders[1].order_lines=", c1.orders[0].order_lines, c1.orders[1].order_lines)
+print("session.query(Item).all() session.query(Order).all()=", session.query(Item).all(), session.query(Order).all())
 
-for ol in c1.orders[0].order_lines:
-    print(ol.id, ol.item, ol.quantity)
+print(session.query(Customer))
 
-print('-------')
 
-for ol in c1.orders[1].order_lines:
-    print(ol.id, ol.item, ol.quantity)
+q = session.query(Customer)
+
+for c in q:
+    print(c.id, c.first_name)
+
+print("session.query(Customer.id, Customer.first_name).all()=", session.query(Customer.id, Customer.first_name).all())
+session.query(Customer).count() # get the total number of records in the customers table
+session.query(Item).count()  # get the total number of records in the items table
+session.query(Order).count()  # get the total number of records in the orders table
+
+# count() method
+print("session.query(Customer).count()", session.query(Customer).count() ) # get the total number of records in the customers table
+print("session.query(Item).count()", session.query(Item).count())  # get the total number of records in the items table
+print("session.query(Order).count()", session.query(Order).count())  # get the total number of records in the orders table
+
+# first() method
+print("session.query(Customer).first()",session.query(Customer).first())
+print("session.query(Item).first()", session.query(Item).first())
+print("session.query(Order).first()", session.query(Order).first())
+
+# get() method
+print("session.query(Customer).get(1)",session.query(Customer).get(1))
+print("session.query(Item).get(1)", session.query(Item).get(1))
+print("session.query(Order).get(100)" , session.query(Order).get(100))
+
+#filter() method
+print("session.query(Customer).filter(Customer.first_name == 'John').all()",session.query(Customer).filter(Customer.first_name == 'John').all())
+
+print(session.query(Customer).filter(Customer.first_name == 'John'))
+
+print("session.query(Customer).filter(Customer.id <= 7, Customer.town == 'Norfolk').all()", session.query(Customer).filter(Customer.id <= 7, Customer.town == 'Norfolk').all())
+
+
+print(session.query(Customer).filter(Customer.id <= 7, Customer.town.like("Nor%")))
+
+print("-----------")
+from sqlalchemy import or_, and_, not_
+
+# find all customers who either live in Peterbrugh or Norfolk
+
+print(session.query(Customer).filter(or_(
+    Customer.town == 'Peterbrugh',
+    Customer.town == 'Norfolk'
+)).all())
+
+
+
+
+# find all customers whose first name is John and live in Norfolk
+
+print(session.query(Customer).filter(and_(
+    Customer.first_name == 'John',
+    Customer.town == 'Norfolk'
+)).all())
+
+
+# find all johns who don't live in Peterbrugh
+
+print(session.query(Customer).filter(and_(
+    Customer.first_name == 'John',
+    not_(
+        Customer.town == 'Peterbrugh',
+    )
+)).all())
+# IS NULL
+
+print("session.query(Order).filter(Order.date_shipped == None).all()", session.query(Order).filter(Order.date_shipped == None).all())
+
+#IS NOT NULL
+print("session.query(Order).filter(Order.date_shipped != None).all()", session.query(Order).filter(Order.date_shipped != None).all())
+
+# IN
+print("session.query(Customer).filter(Customer.first_name.in_(['Toby', 'Sarah'])).all()", session.query(Customer).filter(Customer.first_name.in_(['Toby', 'Sarah'])).all())
+
+# NOT IN
+print("session.query(Customer).filter(Customer.first_name.notin_(['Toby', 'Sarah'])).all()", session.query(Customer).filter(Customer.first_name.notin_(['Toby', 'Sarah'])).all())
+
+# BETWEEN
+print("session.query(Item).filter(Item.cost_price.between(10, 50)).all()", session.query(Item).filter(Item.cost_price.between(10, 50)).all())
+
+# NOT BETWEEN
+print("session.query(Item).filter(not_(Item.cost_price.between(10, 50))).all()", session.query(Item).filter(not_(Item.cost_price.between(10, 50))).all())
+
+# LIKE
+print("session.query(Item).filter(Item.name.like('%r')).all()", session.query(Item).filter(Item.name.like("%r")).all())
+print("session.query(Item).filter(Item.name.ilike('w%')).all()", session.query(Item).filter(Item.name.ilike("w%")).all())
+
+# NOT LIKE
+print("session.query(Item).filter(not_(Item.name.like('W%'))).all()", session.query(Item).filter(not_(Item.name.like('W%'))).all())
+
+# limit() method
+print("session.query(Customer).limit(2).all()", session.query(Customer).limit(2).all())
+print("session.query(Customer).filter(Customer.address.ilike('%avenue')).limit(2).all()", session.query(Customer).filter(Customer.address.ilike("%avenue")).limit(2).all())
+
+print(session.query(Customer).limit(2))
+print(session.query(Customer).filter(Customer.address.ilike("%avenue")).limit(2))
+
+# offset() method
+print("session.query(Customer).limit(2).offset(2).all()",session.query(Customer).limit(2).offset(2).all())
+
+print(session.query(Customer).limit(2).offset(2))
+
+# order_by() method
+
+print("session.query(Item).filter(Item.name.ilike('wa%')).all()", session.query(Item).filter(Item.name.ilike("wa%")).all())
+print("session.query(Item).filter(Item.name.ilike('wa%')).order_by(Item.cost_price).all()",session.query(Item).filter(Item.name.ilike("wa%")).order_by(Item.cost_price).all())
+
+from sqlalchemy import desc
+print(session.query(Item).filter(Item.name.ilike("wa%")).order_by(desc(Item.cost_price)).all())
+
+# join() method
+session.query(Customer).join(Order).all()
+
+print(session.query(Customer).join(Order))
+
+print(session.query(Customer.id, Customer.username, Order.id).join(Order).all())
+
+# outerjoin() method
+session.query(
+    Customer.first_name,
+    Order.id,
+).outerjoin(Order).all()
+
+# group_by() method
+from sqlalchemy import func
+session.query(func.count(Customer.id)).join(Order).filter(
+    Customer.first_name == 'John',
+    Customer.last_name == 'Green',
+).group_by(Customer.id).scalar()
+
+
+
+# having() method
+# find the number of customers lives in each town
+session.query(
+    func.count("*").label('town_count'),
+    Customer.town
+).group_by(Customer.town).having(func.count("*") > 2).all()
+

@@ -331,13 +331,13 @@ print(session.query(
 ).all())
 
 #Casting
-from sqlalchemy import cast, Date, distinct, union
-session.query(
-    cast(func.pi(), Integer),
-    cast(func.pi(), Numeric(10, 2)),
-    cast("2010-12-01", DateTime),
-    cast("2010-12-01", Date),
-).all()
+#from sqlalchemy import cast, Date, distinct, union
+#session.query(
+#    cast(func.pi(), Integer),
+#    cast(func.pi(), Numeric(10, 2)),
+#    cast("2010-12-01", DateTime),
+#    cast("2010-12-01", Date),
+#.all()
 
 
 
@@ -353,6 +353,7 @@ print(s1.union_all(s2).all())
 # Updating Data
 i = session.query(Item).get(8)
 i.selling_price = 25.91
+
 #session.add(i)
 #session.commit()
 
@@ -420,4 +421,4 @@ def dispatch_order(order_id):
 
 dispatch_order(1)
 
-dispatch_order(2)
+# dispatch_order(2)

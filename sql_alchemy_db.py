@@ -347,23 +347,33 @@ print(s1.union_all(s2).all())
 # Updating Data
 i = session.query(Item).get(8)
 i.selling_price = 25.91
-session.add(i)
-session.commit()
+#session.add(i)
+#session.commit()
 
 # update quantity of all quantity of items to 60 whose name starts with 'W'
 
 print(session.query(Item).filter(
     Item.name.ilike("W%")
 ).update({"quantity": 60}, synchronize_session='fetch'))
-session.commit()
+#session.commit()
 
 # Deleting Data
-i = session.query(Item).filter(Item.name == 'Monitor').one()
-i
-session.delete(i)
-session.commit()
+#i = session.query(Item).filter(Item.name == 'Monitor').one()
+#i
+#session.delete(i)
+#session.commit()
 
 session.query(Item).filter(
     Item.name.ilike("W%")
 ).delete(synchronize_session='fetch')
-session.commit()
+#session.commit()
+
+#  Raw Queries
+
+from sqlalchemy import text
+
+print(session.query(Customer).filter(text("first_name = 'John'")).all())
+
+print(session.query(Customer).filter(text("town like 'Nor%'")).all())
+
+print(session.query(Customer).filter(text("town like 'Nor%'")).order_by(text("first_name, id desc")).all())

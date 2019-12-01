@@ -1,4 +1,4 @@
-# Dbase_SQLAlchemy_HMWK
+# sqlAlchemy
 Homework Assignment SQLAlchemy
 
 ## Objective: 

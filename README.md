@@ -1,8 +1,13 @@
-# sqlAlchemy
-Homework Assignment SQLAlchemy
 
-## Objective: 
 
+
+### New Jersey Institute of Technology
+### IS601 - 851
+### Homework Assignment SQLAlchemy
+#### Michelle Boykins
+
+
+### Objective:
 For this homework, you need to create a new branch of your calculator project or you can make a new project. In this branch, you need to follow this tutorial:
 
 https://overiq.com/sqlalchemy-101/crud-using-sqlalchemy-orm/ (Links to an external site.)

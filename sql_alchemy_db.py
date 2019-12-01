@@ -357,5 +357,13 @@ print(session.query(Item).filter(
 ).update({"quantity": 60}, synchronize_session='fetch'))
 session.commit()
 
+# Deleting Data
+i = session.query(Item).filter(Item.name == 'Monitor').one()
+i
+session.delete(i)
+session.commit()
 
-
+session.query(Item).filter(
+    Item.name.ilike("W%")
+).delete(synchronize_session='fetch')
+session.commit()

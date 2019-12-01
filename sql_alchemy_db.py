@@ -330,13 +330,17 @@ print(session.query(
     func.count(Customer.town)
 ).all())
 
-# Casting
-#from datetime import datetime
-from sqlalchemy import cast, Date, distinct, union
+#Casting
 
-session.query(
-    cast(func.pi(), Integer),
-    cast(func.pi(), Numeric(10, 2)),
-    cast("2010-12-01", DateTime),
-    cast("2010-12-01", Date),
-).all()
+
+
+
+# Unions
+s1 = session.query(Item.id, Item.name).filter(Item.name.like("Wa%"))
+s2 = session.query(Item.id, Item.name).filter(Item.name.like("%e%"))
+print(s1.union(s2).all())
+
+
+# Union All
+
+print(s1.union_all(s2).all())

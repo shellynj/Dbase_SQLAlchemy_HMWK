@@ -18,4 +18,4 @@ https://github.com/shellynj/Dbase_SQLAlchemy_HMWK/blob/master/sql_alchemy_db.py
 
 ## Run Output File: 
 
-https://github.com/shellynj/Dbase_SQLAlchemy_HMWK/blob/master/run_output.md
+https://github.com/shellynj/Dbase_SQLAlchemy_HMWK/blob/master/run_output.txt
